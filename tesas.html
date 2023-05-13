@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sort 'N Sleep</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for the email client look */
+        #inbox {
+            height: 500px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #folders {
+            margin-top: 20px;
+        }
+        .my-3 ul {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Sort 'N Sleep</h1>
+        <div class="row">
+            <div class="col-6">
+                <h3>Folders</h3>
+                <div id="folders">
+                    <!-- Folders will be appended here -->
+                </div>
+            </div>
+            <div class="col-6">
+                <h3>Inbox</h3>
+                <ul id="inbox" class="list-group">
+                    <!-- Emails will be appended here -->
+                </ul>
+            </div>
+        </div>
+        <h2 id="done-message" class="text-center my-4" style="display: none;">You're Done!</h2>
+    </div>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+
+
+// List of folders
+var folders = ['Personal', 'Work', 'Spam', 'Important'];
+var emailGenerationInterval;
+
+// Function to generate a random sender
+function generateRandomSender() {
+    var senders = ['John', 'Alice', 'Bob', 'Charlie', 'David'];
+    return senders[Math.floor(Math.random() * senders.length)];
+}
+
+// Function to generate a random subject
+function generateRandomSubject() {
+    var subjects = ['Hello', 'Meeting', 'Lunch?', 'Dinner?', 'Party'];
+    return subjects[Math.floor(Math.random() * subjects.length)];
+}
+
+// Function to generate a new email
+function generateEmail() {
+    var sender = generateRandomSender();
+    var subject = generateRandomSubject();
+    var email = $('<li class="list-group-item"></li>').text(sender + ': ' + subject);
+    email.attr('draggable', 'true');
+    email.attr('id', 'email-' + Date.now()); // Unique ID for each email
+    return email;
+}
+
+// Function to display a new email
+function displayEmail(email) {
+    if (email) {
+        $('#inbox').append(email);
+    }
+}
+
+// Function to display folders
+function displayFolders() {
+    for (var i = 0; i < folders.length; i++) {
+        var folder = $('<div class="my-3"></div>');
+        folder.append($('<h4></h4>').text(folders[i]));
+        folder.append($('<ul class="list-group" id="folder-'+folders[i]+'"></ul>')); // Unique ID for each folder
+        $('#folders').append(folder);
+    }
+}
+
+
+    // Call the displayFolders function when the page loads
+    $(document).ready(function() {
+        displayFolders();
+
+        // Generate 4-8 emails to start
+        var initialEmailCount = Math.floor(Math.random() * 5) + 4;
+        for (var i = 0; i < initialEmailCount; i++) {
+            var email = generateEmail();
+            displayEmail(email);
+        }
+        
+        enableDragAndDrop(); // Enable drag and drop after the initial emails have been generated
+    });
+
+
+// Function to enable drag and drop
+function enableDragAndDrop() {
+    // Remove any previously bound event handlers
+    $('#inbox li').off();
+    $('#folders div').off();
+
+    // Allow email items to be draggable
+    $('#inbox').on('dragstart', 'li', function(event) {
+        event.originalEvent.dataTransfer.setData('text', this.id);
+    });
+
+    // Allow folders to be drop targets
+    $('#folders div').on('dragover', function(event) {
+        event.preventDefault();
+    });
+
+    // Handle dropping an email into a folder
+    $('#folders div').on('drop', function(event) {
+        event.preventDefault();
+        var emailId = event.originalEvent.dataTransfer.getData('text');
+        var email = $('#' + emailId);
+        $(this).find('ul').append(email);
+        email.remove(); // Remove the email from the inbox
+
+        // Check if the inbox is empty
+        if ($('#inbox li').length === 0) {
+            $('#inbox').append('<li class="list-group-item text-center"><h2>You\'re Done!</h2></li>');
+            clearInterval(emailGenerationInterval); // Stop generating emails
+        }
+    });
+}
+
+
+// Generate emails at random intervals
+emailGenerationInterval = setInterval(function() {
+    var email = generateEmail();
+    displayEmail(email);
+}, Math.random() * 10000 + 10000); // Generate an email every 10-20 seconds
+
+
+</script>
+
+</body>
+</html>
