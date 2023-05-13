@@ -4,6 +4,7 @@
     <title>TESAS: Email Sort 'N Sleep V1</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         /* Custom CSS for the email client look */
         #inbox {
@@ -26,19 +27,19 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center my-4">TESAS: Email Sort 'N Sleep V1</h1>
-        <div class="row">
-            <div class="col-md-6 order-md-2">
-                <h3>Inbox</h3>
-                <ul id="inbox" class="list-group">
-                    <!-- Emails will be appended here -->
-                </ul>
-            </div>
-            <div class="col-md-6 order-md-1">
+        <h1 class="text-center my-4">TESAS: Email Sort 'N Sleep mobile V2</h1>
+        <div class="row flex-column-reverse flex-md-row">
+            <div class="col-12 col-md-6">
                 <h3>Folders</h3>
                 <div id="folders">
                     <!-- Folders will be appended here -->
                 </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <h3>Inbox</h3>
+                <ul id="inbox" class="list-group">
+                    <!-- Emails will be appended here -->
+                </ul>
             </div>
         </div>
         <h2 id="done-message" class="text-center my-4" style="display: none;">You're Done!</h2>
