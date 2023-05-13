@@ -26,7 +26,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center my-4">TESAS: Email Sort 'N Sleep V1</h1>
+        <h1 class="text-center my-4">Sort 'N Sleep</h1>
         <div class="row">
             <div class="col-6">
                 <h3>Folders</h3>
@@ -53,27 +53,36 @@
 var folders = ['Personal', 'Work', 'Spam', 'Important'];
 var emailGenerationInterval;
 
+
 // Function to generate a random sender
 function generateRandomSender() {
-    var senders = ['John', 'Alice', 'Bob', 'Charlie', 'David'];
+    var senders = ['John Smith', 'Alice Johnson', 'Bob Anderson', 'Charlie McDonald', 'David Thompson'];
     return senders[Math.floor(Math.random() * senders.length)];
 }
 
 // Function to generate a random subject
 function generateRandomSubject() {
-    var subjects = ['Hello', 'Meeting', 'Lunch?', 'Dinner?', 'Party'];
+    var subjects = ['Important Meeting Reminder', 'Lunch Catch-up?', 'Dinner Reservation Confirmation', 'Party Invitation', 'Your Monthly Report'];
     return subjects[Math.floor(Math.random() * subjects.length)];
+}
+
+// Function to generate a random snippet
+function generateRandomSnippet() {
+    var snippets = ['Just a quick reminder about...', 'How about we meet for lunch...', 'Your table for two will be...', 'You are cordially invited to...', 'Your performance this month...'];
+    return snippets[Math.floor(Math.random() * snippets.length)];
 }
 
 // Function to generate a new email
 function generateEmail() {
     var sender = generateRandomSender();
     var subject = generateRandomSubject();
-    var email = $('<li class="list-group-item"></li>').text(sender + ': ' + subject);
+    var snippet = generateRandomSnippet();
+    var email = $('<li class="list-group-item"></li>').text(sender + ': ' + subject + ' - ' + snippet);
     email.attr('draggable', 'true');
     email.attr('id', 'email-' + Date.now()); // Unique ID for each email
     return email;
 }
+
 
 // Function to display a new email
 function displayEmail(email) {
@@ -134,7 +143,7 @@ function enableDragAndDrop() {
 
         // Check if the inbox is empty
         if ($('#inbox li').length === 0) {
-            $('#inbox').append('<li class="list-group-item text-center"><h2>You\'re Done!</h2></li>');
+            $('#inbox').append('<li class="list-group-item text-center"><h2>You\'re Done! Go to Sleep!</h2></li>');
             clearInterval(emailGenerationInterval); // Stop generating emails
         }
     });
